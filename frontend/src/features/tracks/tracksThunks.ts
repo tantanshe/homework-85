@@ -1,6 +1,6 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import {createAsyncThunk} from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { Track } from '../../types';
+import {Track} from '../../types';
 
 export const fetchTracks = createAsyncThunk<Track[], string>(
   'tracks/fetchTracks',

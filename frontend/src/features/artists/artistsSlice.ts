@@ -34,7 +34,7 @@ const artistsSlice = createSlice({
       .addCase(fetchArtists.rejected, (state) => {
         state.loading = false;
         state.error = true;
-      })
+      });
 
     builder
       .addCase(fetchArtistById.pending, (state) => {

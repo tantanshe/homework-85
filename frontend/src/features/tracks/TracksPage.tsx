@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectTracks, selectIsTracksLoading, selectTracksError} from './tracksSlice';
 import {fetchTracks} from './tracksThunks';
-import {List, ListItem, ListItemText, CircularProgress, Alert, Typography, Stack} from '@mui/material';
+import {List, ListItem, ListItemText, CircularProgress, Alert, Typography, Stack, Paper} from '@mui/material';
 import {useParams} from 'react-router-dom';
 import {AppDispatch} from '../../app/store';
 import {selectAlbum, selectAlbumError, selectIsAlbumLoading} from '../albums/albumsSlice';
@@ -52,10 +52,20 @@ const TracksPage: React.FC = () => {
       <List>
         {tracks.map((track) => (
           <ListItem key={track._id}>
-            <ListItemText
-              primary={`${track.trackNumber}. ${track.name}`}
-              secondary={`Duration: ${track.duration}`}
-            />
+            <Paper
+              elevation={3}
+              style={{
+                width: '100%',
+                padding: '8px 16px',
+                marginBottom: '8px',
+                backgroundColor: '#d8e2e4'
+              }}
+            >
+              <ListItemText
+                primary={`${track.trackNumber}. ${track.name}`}
+                secondary={`Duration: ${track.duration}`}
+              />
+            </Paper>
           </ListItem>
         ))}
       </List>
