@@ -15,6 +15,7 @@ export interface TrackMutation {
   name: string;
   album: string;
   duration: string;
+  trackNumber: number,
 }
 
 export interface UserFields {

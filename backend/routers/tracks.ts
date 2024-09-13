@@ -10,7 +10,7 @@ tracksRouter.get('/tracks', async (req, res, next) => {
   try {
     const albumId = req.query.album;
     const query = albumId ? {album: albumId} : {};
-    const tracks = await Track.find(query).populate('album');
+    const tracks = await Track.find(query).populate('album').sort({trackNumber: 1});
     res.json(tracks);
   } catch (error) {
     next(error);
@@ -23,6 +23,7 @@ tracksRouter.post('/tracks', async (req, res, next) => {
       name: req.body.name,
       album: req.body.album,
       duration: req.body.duration,
+      trackNumber: req.body.trackNumber,
     };
 
     const isAlbum = await Album.findById(trackMutation.album);

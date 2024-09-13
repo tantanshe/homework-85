@@ -11,7 +11,7 @@ albumsRouter.get('/albums', async (req, res, next) => {
   try {
     const artistId = req.query.artist;
     const query = artistId ? {artist: artistId} : {};
-    const albums = await Album.find(query).populate('artist');
+    const albums = await Album.find(query).populate('artist').sort({year: -1});
     res.json(albums);
   } catch (error) {
     next(error);
