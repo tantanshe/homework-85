@@ -8,6 +8,14 @@ const TrackSchema = new Schema({
     type: String,
     required: true,
   },
+  duration: {
+    type: String,
+    required: true,
+  },
+  trackNumber: {
+    type: Number,
+    required: true,
+  },
   album: {
     type: Schema.Types.ObjectId,
     ref: 'Album',
@@ -19,14 +27,6 @@ const TrackSchema = new Schema({
       },
       message: 'Album does not exist!',
     }
-  },
-  duration: {
-    type: String,
-    required: true,
-  },
-  trackNumber: {
-    type: Number,
-    required: true,
   },
 });
 

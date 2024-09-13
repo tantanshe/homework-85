@@ -10,7 +10,7 @@ tracksRouter.get('/tracks', async (req, res, next) => {
   try {
     const albumId = req.query.album;
     const query = albumId ? {album: albumId} : {};
-    const tracks = await Track.find(query).populate('album').sort({trackNumber: 1});
+    const tracks = await Track.find(query).sort({trackNumber: 1});
     res.json(tracks);
   } catch (error) {
     next(error);

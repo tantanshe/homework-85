@@ -8,6 +8,13 @@ const AlbumSchema = new Schema({
     type: String,
     required: true,
   },
+  year: {
+    type: Number,
+    required: true,
+  },
+  photo: {
+    type: String,
+  },
   artist: {
     type: Schema.Types.ObjectId,
     ref: 'Artist',
@@ -19,13 +26,6 @@ const AlbumSchema = new Schema({
       },
       message: 'Artist does not exist!',
     }
-  },
-  year: {
-    type: Number,
-    required: true,
-  },
-  photo: {
-    type: String,
   },
 });
 

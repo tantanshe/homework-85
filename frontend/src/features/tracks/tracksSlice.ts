@@ -40,4 +40,4 @@ export const selectTracks = (state: RootState) => state.tracks.tracks;
 export const selectIsTracksLoading = (state: RootState) => state.tracks.loading;
 export const selectTracksError = (state: RootState) => state.tracks.error;
 
-export default tracksSlice.reducer;
+export const tracksReducer = tracksSlice.reducer;
