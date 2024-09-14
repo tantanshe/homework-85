@@ -6,6 +6,7 @@ import TracksPage from './features/tracks/TracksPage';
 import {Route, Routes} from 'react-router-dom';
 import AppToolbar from './UI/AppToolbar/AppToolbar';
 import Register from './features/users/Register';
+import Login from './features/users/Login';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<ArtistsPage/>}/>
           <Route path="/register" element={<Register/>}/>
+          <Route path="/login" element={<Login/>}/>
           <Route path="/artists/:artistId" element={<AlbumsPage/>}/>
           <Route path="/artists/:artistId/albums/:albumId/tracks" element={<TracksPage/>}/>
           <Route path="*" element={<Typography variant="h1">Not found</Typography>} />
