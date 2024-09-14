@@ -2,13 +2,24 @@ import React, {useState} from 'react';
 import {RegisterMutation} from '../../types';
 import {Avatar, Box, Button, Grid, TextField, Typography, Link} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import {selectRegisterError} from './usersSlice';
+import {register} from './usersThunks';
 
 const Register = () => {
+  const dispatch = useAppDispatch();
+  const error = useAppSelector(selectRegisterError);
+  const navigate = useNavigate();
+
   const [state, setState] = useState<RegisterMutation>({
     username: '',
     password: '',
   });
+
+  const getFieldError = (fieldName: string) => {
+    return error?.errors[fieldName]?.message;
+  };
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
@@ -18,8 +29,14 @@ const Register = () => {
     }));
   };
 
-  const submitFormHandler = (event: React.FormEvent) => {
+  const submitFormHandler = async (event: React.FormEvent) => {
     event.preventDefault();
+    try {
+      await dispatch(register(state)).unwrap();
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -48,6 +65,8 @@ const Register = () => {
               autoComplete="new-username"
               value={state.username}
               onChange={inputChangeHandler}
+              error={Boolean(getFieldError('username'))}
+              helperText={getFieldError('username')}
             />
           </Grid>
           <Grid item>
@@ -59,6 +78,8 @@ const Register = () => {
               autoComplete="new-password"
               value={state.password}
               onChange={inputChangeHandler}
+              error={Boolean(getFieldError('password'))}
+              helperText={getFieldError('password')}
             />
           </Grid>
         </Grid>
