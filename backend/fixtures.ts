@@ -78,7 +78,7 @@ const run = async () => {
     ],
     ...[
       {name: 'Cream Soda', duration: '3:20', trackNumber: 1, album: albumTwoArtistTwo._id},
-      {name: 'Fever', duration: '3:35', trackNumber: 2, album: albumTwoArtistTwo._id},
+      {name: 'Love Fool', duration: '3:35', trackNumber: 2, album: albumTwoArtistTwo._id},
       {name: 'Regret It', duration: '2:56', trackNumber: 3, album: albumTwoArtistTwo._id},
       {name: 'Let Me In', duration: '3:18', trackNumber: 4, album: albumTwoArtistTwo._id},
       {name: 'Hear Me Out', duration: '3:25', trackNumber: 5, album: albumTwoArtistTwo._id}

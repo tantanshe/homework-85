@@ -28,6 +28,9 @@ const AppToolbar = () => {
               <Typography>
               User is logged in
               </Typography>
+              <Button component={NavLink} to="/track_history" color="inherit">
+                Track History
+              </Button>
             </Grid>
             ) : (
             <Grid item>

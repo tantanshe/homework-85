@@ -2,13 +2,15 @@ import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectTracks, selectIsTracksLoading, selectTracksError} from './tracksSlice';
 import {fetchTracks} from './tracksThunks';
-import {List, ListItem, ListItemText, CircularProgress, Alert, Typography, Stack, Paper} from '@mui/material';
+import {List, ListItem, ListItemText, CircularProgress, Alert, Typography, Stack, Paper, Button} from '@mui/material';
 import {useParams} from 'react-router-dom';
 import {AppDispatch} from '../../app/store';
 import {selectAlbum, selectAlbumError, selectIsAlbumLoading} from '../albums/albumsSlice';
 import {selectArtist, selectArtistError, selectIsArtistLoading} from '../artists/artistsSlice';
 import {fetchAlbumById} from '../albums/albumsThunks';
 import {fetchArtistById} from '../artists/artistsThunks';
+import {addTrackToHistory} from '../trackHistory/trackHistoryThunks';
+import {selectUser} from '../users/usersSlice';
 
 const TracksPage: React.FC = () => {
   const dispatch: AppDispatch = useAppDispatch();
@@ -23,6 +25,7 @@ const TracksPage: React.FC = () => {
   const artist = useAppSelector((state) => selectArtist(state));
   const loadingArtist = useAppSelector(selectIsArtistLoading);
   const errorArtist = useAppSelector(selectArtistError);
+  const user = useAppSelector(selectUser);
 
   useEffect(() => {
     if (artistId && albumId) {
@@ -31,6 +34,10 @@ const TracksPage: React.FC = () => {
       dispatch(fetchTracks(albumId));
     }
   }, [dispatch, artistId, albumId]);
+
+  const handlePlay = (trackId: string) => {
+      dispatch(addTrackToHistory(trackId));
+  };
 
   if (loadingTracks || loadingAlbum || loadingArtist) return <CircularProgress/>;
   if (errorTracks) return <Alert severity="error">Error loading tracks</Alert>;
@@ -65,6 +72,15 @@ const TracksPage: React.FC = () => {
                 primary={`${track.trackNumber}. ${track.name}`}
                 secondary={`Duration: ${track.duration}`}
               />
+              {user && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handlePlay(track._id)}
+                >
+                  Play
+                </Button>
+              )}
             </Paper>
           </ListItem>
         ))}
