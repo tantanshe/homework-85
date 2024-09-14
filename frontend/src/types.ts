@@ -19,3 +19,8 @@ export interface Track {
   name: string;
   duration: string;
 }
+
+export interface RegisterMutation {
+  username: string;
+  password: string;
+}
