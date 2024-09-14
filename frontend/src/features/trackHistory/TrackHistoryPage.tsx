@@ -33,7 +33,7 @@ const TrackHistoryPage: React.FC = () => {
     <>
       {user ? (
         <Stack spacing={2}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom align="center" sx={{ mt: 4 }}>
             Track History
           </Typography>
           {trackHistory.length === 0 ? (

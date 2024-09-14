@@ -15,7 +15,7 @@ const AppToolbar = () => {
   const user = useAppSelector(selectUser);
 
   return (
-    <AppBar position="sticky" sx={{mb: 2}}>
+    <AppBar position="sticky" sx={{mb: 2, pt: 1, pb: 1}}>
       <Toolbar>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
@@ -28,7 +28,16 @@ const AppToolbar = () => {
               <Typography>
               User is logged in
               </Typography>
-              <Button component={NavLink} to="/track_history" color="inherit">
+              <Button component={NavLink} to="/track_history" sx={{
+                backgroundColor: '#ffffff',
+                border: '2px solid #3f51b5',
+                borderRadius: '10px',
+                padding: '8px',
+                margin: '5px 0',
+                '&:hover': {
+                  backgroundColor: '#a7b2df',
+                },
+              }}>
                 Track History
               </Button>
             </Grid>

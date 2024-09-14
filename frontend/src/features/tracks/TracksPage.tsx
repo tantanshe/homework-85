@@ -2,7 +2,17 @@ import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectTracks, selectIsTracksLoading, selectTracksError} from './tracksSlice';
 import {fetchTracks} from './tracksThunks';
-import {List, ListItem, ListItemText, CircularProgress, Alert, Typography, Stack, Paper, Button} from '@mui/material';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  CircularProgress,
+  Alert,
+  Typography,
+  Stack,
+  Paper,
+  IconButton
+} from '@mui/material';
 import {useParams} from 'react-router-dom';
 import {AppDispatch} from '../../app/store';
 import {selectAlbum, selectAlbumError, selectIsAlbumLoading} from '../albums/albumsSlice';
@@ -11,6 +21,8 @@ import {fetchAlbumById} from '../albums/albumsThunks';
 import {fetchArtistById} from '../artists/artistsThunks';
 import {addTrackToHistory} from '../trackHistory/trackHistoryThunks';
 import {selectUser} from '../users/usersSlice';
+import {PlayArrow} from '@mui/icons-material';
+
 
 const TracksPage: React.FC = () => {
   const dispatch: AppDispatch = useAppDispatch();
@@ -65,7 +77,10 @@ const TracksPage: React.FC = () => {
                 width: '100%',
                 padding: '8px 16px',
                 marginBottom: '8px',
-                backgroundColor: '#d8e2e4'
+                backgroundColor: '#d8e2e4',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
               }}
             >
               <ListItemText
@@ -73,13 +88,21 @@ const TracksPage: React.FC = () => {
                 secondary={`Duration: ${track.duration}`}
               />
               {user && (
-                <Button
-                  variant="contained"
+                <IconButton
                   color="primary"
                   onClick={() => handlePlay(track._id)}
+                  sx={{
+                    backgroundColor: '#ffffff',
+                    border: '2px solid #3f51b5',
+                    borderRadius: '50%',
+                    padding: '8px',
+                    '&:hover': {
+                      backgroundColor: '#a7b2df',
+                    },
+                  }}
                 >
-                  Play
-                </Button>
+                  <PlayArrow />
+                </IconButton>
               )}
             </Paper>
           </ListItem>

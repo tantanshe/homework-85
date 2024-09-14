@@ -23,7 +23,7 @@ const ArtistsPage: React.FC = () => {
     <>
       <Grid container spacing={2} justifyContent="center">
         {artists.map((artist) => (
-          <Grid item key={artist._id} xs={12} sm={6} md={4} lg={3}>
+          <Grid item key={artist._id} xs={12} sm={6} md={4} lg={3} sx={{ mt: 4 }}>
             <Card style={{width: '100%'}}>
               <Link to={`/artists/${artist._id}`}>
                 <CardMedia
