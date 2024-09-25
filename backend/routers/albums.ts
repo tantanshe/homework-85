@@ -7,7 +7,7 @@ import {AlbumMutation} from '../types';
 
 const albumsRouter = express.Router();
 
-albumsRouter.get('/albums', async (req, res, next) => {
+albumsRouter.get('/', async (req, res, next) => {
   try {
     const artistId = req.query.artist;
     const query = artistId ? {artist: artistId} : {};
@@ -18,7 +18,7 @@ albumsRouter.get('/albums', async (req, res, next) => {
   }
 });
 
-albumsRouter.post('/albums', imagesUpload.single('photo'), async (req, res, next) => {
+albumsRouter.post('/', imagesUpload.single('photo'), async (req, res, next) => {
   try {
     const albumMutation: AlbumMutation = {
       name: req.body.name,
@@ -44,7 +44,7 @@ albumsRouter.post('/albums', imagesUpload.single('photo'), async (req, res, next
   }
 });
 
-albumsRouter.get('/albums/:id', async (req, res, next) => {
+albumsRouter.get('/:id', async (req, res, next) => {
   try {
     const album = await Album.findById(req.params.id).populate('artist');
     if (!album) {

@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import {Alert, Avatar, Box, Button, Grid, Link, TextField, Typography} from '@mui/material';
+import {Alert, Avatar, Box, Button, CircularProgress, Grid, Link, TextField, Typography} from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {LoginMutation} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectLoginError} from './usersSlice';
+import {selectLoginError, selectLoginLoading} from './usersSlice';
 import {login} from './usersThunks';
 
 const Login = () => {
   const dispatch = useAppDispatch();
+  const loading = useAppSelector(selectLoginLoading)
   const error = useAppSelector(selectLoginError);
   const navigate = useNavigate();
 
@@ -34,6 +35,8 @@ const Login = () => {
       console.log(e);
     }
   };
+
+  if (loading) return <CircularProgress/>;
 
   return (
     <Box sx={{

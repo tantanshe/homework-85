@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
 import {RegisterMutation} from '../../types';
-import {Avatar, Box, Button, Grid, TextField, Typography, Link} from '@mui/material';
+import {Avatar, Box, Button, Grid, TextField, Typography, Link, CircularProgress} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectRegisterError} from './usersSlice';
+import {selectRegisterError, selectRegisterLoading} from './usersSlice';
 import {register} from './usersThunks';
 
 const Register = () => {
   const dispatch = useAppDispatch();
+  const loading = useAppSelector(selectRegisterLoading)
   const error = useAppSelector(selectRegisterError);
   const navigate = useNavigate();
 
@@ -22,14 +23,15 @@ const Register = () => {
   };
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+
     const {name, value} = event.target;
     setState((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
-
   const submitFormHandler = async (event: React.FormEvent) => {
+
     event.preventDefault();
     try {
       await dispatch(register(state)).unwrap();
@@ -38,6 +40,8 @@ const Register = () => {
       console.log(e);
     }
   };
+
+  if (loading) return <CircularProgress/>;
 
   return (
     <Box sx={{

@@ -7,7 +7,7 @@ import {ArtistMutation} from '../types';
 
 const artistsRouter = express.Router();
 
-artistsRouter.get('/artists', async (_req, res, next) => {
+artistsRouter.get('/', async (_req, res, next) => {
   try {
     const artists = await Artist.find();
     res.json(artists);
@@ -16,7 +16,7 @@ artistsRouter.get('/artists', async (_req, res, next) => {
   }
 });
 
-artistsRouter.get('/artists/:id', async (req, res, next) => {
+artistsRouter.get('/:id', async (req, res, next) => {
   try {
     const artist = await Artist.findById(req.params.id);
     if (!artist) {
@@ -28,7 +28,7 @@ artistsRouter.get('/artists/:id', async (req, res, next) => {
   }
 });
 
-artistsRouter.post('/artists', imagesUpload.single('photo'), async (req, res, next) => {
+artistsRouter.post('/', imagesUpload.single('photo'), async (req, res, next) => {
   try {
     const artistMutation: ArtistMutation = {
       name: req.body.name,

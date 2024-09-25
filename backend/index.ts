@@ -25,11 +25,11 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/fixtures', express.static(path.join(__dirname, 'public/fixtures')));
-app.use('/', artistsRouter);
-app.use('/', albumsRouter);
-app.use('/', tracksRouter);
-app.use('/', usersRouter);
-app.use('/', trackHistoryRouter);
+app.use('/artists', artistsRouter);
+app.use('/albums', albumsRouter);
+app.use('/tracks', tracksRouter);
+app.use('/users', usersRouter);
+app.use('/track_history', trackHistoryRouter);
 
 const run = async () => {
   await mongoose.connect('mongodb://localhost/spotify');

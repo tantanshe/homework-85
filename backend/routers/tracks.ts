@@ -7,7 +7,7 @@ import Artist from '../models/Artist';
 
 const tracksRouter = express.Router();
 
-tracksRouter.get('/tracks', async (req, res, next) => {
+tracksRouter.get('/', async (req, res, next) => {
   try {
     const albumId = req.query.album;
     const query = albumId ? {album: albumId} : {};
@@ -18,7 +18,7 @@ tracksRouter.get('/tracks', async (req, res, next) => {
   }
 });
 
-tracksRouter.get('/tracks/:id', async (req, res, next) => {
+tracksRouter.get('/:id', async (req, res, next) => {
   try {
     const {id} = req.params;
     const track = await Track.findById(id).populate({
@@ -39,7 +39,7 @@ tracksRouter.get('/tracks/:id', async (req, res, next) => {
   }
 });
 
-tracksRouter.post('/tracks', async (req, res, next) => {
+tracksRouter.post('/', async (req, res, next) => {
   try {
     const trackMutation: TrackMutation = {
       name: req.body.name,

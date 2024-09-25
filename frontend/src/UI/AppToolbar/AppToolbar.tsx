@@ -1,7 +1,8 @@
 import {AppBar, Button, Grid, styled, Toolbar, Typography} from '@mui/material';
 import {Link, NavLink} from 'react-router-dom';
-import {useAppSelector} from '../../app/hooks';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectUser} from '../../features/users/usersSlice';
+import {logout} from '../../features/users/usersThunks';
 
 const StyledLink = styled(Link)({
   color: 'inherit',
@@ -12,7 +13,12 @@ const StyledLink = styled(Link)({
 });
 
 const AppToolbar = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <AppBar position="sticky" sx={{mb: 2, pt: 1, pb: 1}}>
@@ -26,8 +32,20 @@ const AppToolbar = () => {
           {user ? (
             <Grid item>
               <Typography>
-              User is logged in
+                User is logged in
               </Typography>
+              <Button onClick={handleLogout} sx={{
+                backgroundColor: '#ffffff',
+                border: '2px solid #3f51b5',
+                borderRadius: '10px',
+                padding: '8px',
+                margin: '5px 0',
+                '&:hover': {
+                  backgroundColor: '#a7b2df',
+                },
+              }}>
+                Logout
+              </Button>
               <Button component={NavLink} to="/track_history" sx={{
                 backgroundColor: '#ffffff',
                 border: '2px solid #3f51b5',
@@ -41,7 +59,7 @@ const AppToolbar = () => {
                 Track History
               </Button>
             </Grid>
-            ) : (
+          ) : (
             <Grid item>
               <Button component={NavLink} to="/register" color="inherit">
                 Sign up
