@@ -1,19 +1,20 @@
 export interface Artist {
-  _id: string;
+  _id?: string;
   name: string;
-  photo: string;
+  info: string;
+  photo: File | null;
 }
 
 export interface Album {
-  _id: string;
+  _id?: string;
   artistId: string;
   name: string;
-  photo: string;
+  photo: File | null;
   year: number;
 }
 
 export interface Track {
-  _id: string;
+  _id?: string;
   albumId: string;
   trackNumber: number;
   name: string;
@@ -34,6 +35,7 @@ export interface User {
   _id: string;
   username: string;
   token: string;
+  role: string;
 }
 
 export interface ValidationError {

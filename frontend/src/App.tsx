@@ -8,6 +8,9 @@ import AppToolbar from './UI/AppToolbar/AppToolbar';
 import Register from './features/users/Register';
 import Login from './features/users/Login';
 import TrackHistoryPage from './features/trackHistory/TrackHistoryPage';
+import AddArtist from './features/artists/AddArtist';
+import AddAlbum from './features/albums/AddAlbum';
+import AddTrack from './features/tracks/AddTrack';
 
 const App = () => {
   return (
@@ -23,7 +26,10 @@ const App = () => {
           <Route path="/artists/:artistId" element={<AlbumsPage/>}/>
           <Route path="/artists/:artistId/albums/:albumId/tracks" element={<TracksPage/>}/>
           <Route path="/track_history" element={<TrackHistoryPage/>}/>
-          <Route path="*" element={<Typography variant="h1">Not found</Typography>} />
+          <Route path="/addArtist" element={<AddArtist/>}/>
+          <Route path="/addAlbum" element={<AddAlbum/>}/>
+          <Route path="/addTrack" element={<AddTrack/>}/>
+          <Route path="*" element={<Typography variant="h1">Not found</Typography>}/>
         </Routes>
       </Container>
     </>

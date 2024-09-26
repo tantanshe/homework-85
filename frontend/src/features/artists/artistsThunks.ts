@@ -17,3 +17,26 @@ export const fetchArtistById = createAsyncThunk<Artist, string>(
     return response.data;
   }
 );
+
+export const addArtist = createAsyncThunk<Artist, Artist>(
+  'artists/addArtist',
+  async (artistData) => {
+    const response = await axiosApi.post('/artists', artistData);
+    return response.data;
+  }
+);
+
+export const deleteArtist = createAsyncThunk<void, string>(
+  'artists/deleteArtist',
+  async (artistId) => {
+    await axiosApi.delete(`/artists/${artistId}`);
+  }
+);
+
+export const updateArtist = createAsyncThunk<Artist, Artist>(
+  'artists/updateArtist',
+  async (artistData) => {
+    const response = await axiosApi.patch(`/artists/${artistData._id}`, artistData);
+    return response.data;
+  }
+);

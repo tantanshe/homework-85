@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchAlbumById, fetchAlbums} from './albumsThunks';
+import {addAlbum, deleteAlbum, fetchAlbumById, fetchAlbums, updateAlbum} from './albumsThunks';
 import {Album} from '../../types';
 import {RootState} from '../../app/store';
 
@@ -46,6 +46,51 @@ const albumsSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchAlbumById.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
+
+    builder
+      .addCase(addAlbum.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(addAlbum.fulfilled, (state, action) => {
+        state.albums.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(addAlbum.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
+
+    builder
+      .addCase(deleteAlbum.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(deleteAlbum.fulfilled, (state, action) => {
+        state.albums = state.albums.filter(album => album._id !== action.payload);
+        state.loading = false;
+      })
+      .addCase(deleteAlbum.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
+
+    builder
+      .addCase(updateAlbum.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(updateAlbum.fulfilled, (state, action) => {
+        const index = state.albums.findIndex(album => album._id === action.payload._id);
+        if (index !== -1) {
+          state.albums[index] = action.payload;
+        }
+        state.loading = false;
+      })
+      .addCase(updateAlbum.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });

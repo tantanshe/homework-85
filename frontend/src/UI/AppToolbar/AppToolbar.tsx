@@ -34,18 +34,6 @@ const AppToolbar = () => {
               <Typography>
                 User is logged in
               </Typography>
-              <Button onClick={handleLogout} sx={{
-                backgroundColor: '#ffffff',
-                border: '2px solid #3f51b5',
-                borderRadius: '10px',
-                padding: '8px',
-                margin: '5px 0',
-                '&:hover': {
-                  backgroundColor: '#a7b2df',
-                },
-              }}>
-                Logout
-              </Button>
               <Button component={NavLink} to="/track_history" sx={{
                 backgroundColor: '#ffffff',
                 border: '2px solid #3f51b5',
@@ -57,6 +45,54 @@ const AppToolbar = () => {
                 },
               }}>
                 Track History
+              </Button>
+              <Button component={NavLink} to="/addArtist" sx={{
+                backgroundColor: '#ffffff',
+                border: '2px solid #3f51b5',
+                borderRadius: '10px',
+                padding: '8px',
+                margin: '5px 0',
+                '&:hover': {
+                  backgroundColor: '#a7b2df',
+                },
+              }}>
+                Add Artist
+              </Button>
+              <Button component={NavLink} to="/addAlbum" sx={{
+                backgroundColor: '#ffffff',
+                border: '2px solid #3f51b5',
+                borderRadius: '10px',
+                padding: '8px',
+                margin: '5px 0',
+                '&:hover': {
+                  backgroundColor: '#a7b2df',
+                },
+              }}>
+                Add Album
+              </Button>
+              <Button component={NavLink} to="/addTrack" sx={{
+                backgroundColor: '#ffffff',
+                border: '2px solid #3f51b5',
+                borderRadius: '10px',
+                padding: '8px',
+                margin: '5px 0',
+                '&:hover': {
+                  backgroundColor: '#a7b2df',
+                },
+              }}>
+                Add Track
+              </Button>
+              <Button onClick={handleLogout} sx={{
+                backgroundColor: '#ffffff',
+                border: '2px solid #3f51b5',
+                borderRadius: '10px',
+                padding: '8px',
+                margin: '5px 0',
+                '&:hover': {
+                  backgroundColor: '#a7b2df',
+                },
+              }}>
+                Logout
               </Button>
             </Grid>
           ) : (

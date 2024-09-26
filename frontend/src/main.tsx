@@ -6,6 +6,9 @@ import {ThemeProvider} from '@mui/material';
 import {BrowserRouter} from 'react-router-dom';
 import theme from './theme';
 import {PersistGate} from 'redux-persist/integration/react';
+import {addInterceptors} from './axiosApi';
+
+addInterceptors(store);
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>

@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchTracks} from './tracksThunks';
+import {addTrack, deleteTrack, fetchTracks, updateTrack} from './tracksThunks';
 import {Track} from '../../types';
 import {RootState} from '../../app/store';
 
@@ -30,6 +30,51 @@ const tracksSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchTracks.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
+
+    builder
+      .addCase(addTrack.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(addTrack.fulfilled, (state, action) => {
+        state.tracks.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(addTrack.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
+
+    builder
+      .addCase(deleteTrack.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(deleteTrack.fulfilled, (state, action) => {
+        state.tracks = state.tracks.filter(track => track._id !== action.payload);
+        state.loading = false;
+      })
+      .addCase(deleteTrack.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
+
+    builder
+      .addCase(updateTrack.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(updateTrack.fulfilled, (state, action) => {
+        const index = state.tracks.findIndex(track => track._id === action.payload._id);
+        if (index !== -1) {
+          state.tracks[index] = action.payload;
+        }
+        state.loading = false;
+      })
+      .addCase(updateTrack.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });

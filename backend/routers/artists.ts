@@ -6,12 +6,12 @@ import {ArtistMutation} from '../types';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
 
-
 const artistsRouter = express.Router();
 
-artistsRouter.get('/', async (_req, res, next) => {
+artistsRouter.get('/', auth, async (req: RequestWithUser, res, next) => {
   try {
-    const artists = await Artist.find();
+    const query = req.user?.role === 'admin' ? {} : { isPublished: true };
+    const artists = await Artist.find(query);
     res.json(artists);
   } catch (error) {
     next(error);
@@ -32,9 +32,12 @@ artistsRouter.get('/:id', async (req, res, next) => {
 
 artistsRouter.post('/', auth, imagesUpload.single('photo'), async (req: RequestWithUser, res, next) => {
   try {
+    if (!req.user) {
+      return res.status(401).send({error: 'User not found.'});
+    }
     const artistMutation: ArtistMutation = {
       name: req.body.name,
-      photo: req.file ? req.file.path : null,
+      photo: req.file ? req.file.filename : null,
       info: req.body.info,
     };
 
@@ -53,6 +56,9 @@ artistsRouter.post('/', auth, imagesUpload.single('photo'), async (req: RequestW
 
 artistsRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, res, next) => {
   try {
+    if (!req.user) {
+      return res.status(401).send({error: 'User not found.'});
+    }
     await Artist.deleteOne({_id: req.params.id});
 
     res.send({message: 'Artist deleted successfully'});
@@ -63,6 +69,9 @@ artistsRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser,
 
 artistsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req: RequestWithUser, res, next) => {
   try {
+    if (!req.user) {
+      return res.status(401).send({error: 'User not found.'});
+    }
     const artist = await Artist.findById(req.params.id);
 
     if (!artist) {

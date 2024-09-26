@@ -17,3 +17,26 @@ export const fetchAlbumById = createAsyncThunk<Album, string>(
     return response.data;
   }
 );
+
+export const addAlbum = createAsyncThunk<Album, Album>(
+  'albums/addAlbum',
+  async (albumData) => {
+    const response = await axiosApi.post('/albums', albumData);
+    return response.data;
+  }
+);
+
+export const deleteAlbum = createAsyncThunk<void, string>(
+  'albums/deleteAlbum',
+  async (albumId) => {
+    await axiosApi.delete(`/albums/${albumId}`);
+  }
+);
+
+export const updateAlbum = createAsyncThunk<Album, Album>(
+  'albums/updateAlbum',
+  async (albumData) => {
+    const response = await axiosApi.patch(`/albums/${albumData._id}`, albumData);
+    return response.data;
+  }
+);

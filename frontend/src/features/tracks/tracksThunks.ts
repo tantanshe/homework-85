@@ -9,3 +9,26 @@ export const fetchTracks = createAsyncThunk<Track[], string>(
     return response.data;
   }
 );
+
+export const addTrack = createAsyncThunk<Track, Track>(
+  'tracks/addTrack',
+  async (trackData) => {
+    const response = await axiosApi.post('/tracks', trackData);
+    return response.data;
+  }
+);
+
+export const deleteTrack = createAsyncThunk<void, string>(
+  'tracks/deleteTrack',
+  async (trackId) => {
+    await axiosApi.delete(`/tracks/${trackId}`);
+  }
+);
+
+export const updateTrack = createAsyncThunk<Track, Track>(
+  'tracks/updateTrack',
+  async (trackData) => {
+    const response = await axiosApi.patch(`/tracks/${trackData._id}`, trackData);
+    return response.data;
+  }
+);

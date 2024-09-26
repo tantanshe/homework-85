@@ -3,17 +3,14 @@ import {RequestWithUser} from './auth';
 
 
 const permit = (...roles: string[]) => {
-  return (expressReq: Request, res: Response, next: NextFunction) => {
-    const req = expressReq as RequestWithUser;
+  return (req: Request, res: Response, next: NextFunction) => {
+    const user = (req as RequestWithUser).user;
 
-    if (!req.user) {
-      return res.status(401).send({'message': 'Unauthenticated'});
+    if (!user || !roles.includes(user.role)) {
+      return res.status(403).send({'error': 'Unauthorized'});
     }
 
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).send({'message': 'Unauthorized'});
-    }
-    next();
+    return next();
   };
 };
 

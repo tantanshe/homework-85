@@ -22,11 +22,14 @@ albumsRouter.get('/', async (req, res, next) => {
 
 albumsRouter.post('/', auth, imagesUpload.single('photo'), async (req: RequestWithUser, res, next) => {
   try {
+    if (!req.user) {
+      return res.status(401).send({error: 'User not found.'});
+    }
     const albumMutation: AlbumMutation = {
       name: req.body.name,
       artist: req.body.artist,
       year: req.body.year,
-      photo: req.file ? req.file.path : null,
+      photo: req.file ? req.file.filename : null,
     };
 
     const isArtist = await Artist.findById(albumMutation.artist);
@@ -60,6 +63,9 @@ albumsRouter.get('/:id', async (req, res, next) => {
 
 albumsRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, res, next) => {
   try {
+    if (!req.user) {
+      return res.status(401).send({error: 'User not found.'});
+    }
     await Album.deleteOne({_id: req.params.id});
 
     res.send({message: 'Album deleted successfully'});
