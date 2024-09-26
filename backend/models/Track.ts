@@ -28,6 +28,11 @@ const TrackSchema = new Schema({
       message: 'Album does not exist!',
     }
   },
+  isPublished: {
+    type: Boolean,
+    required: true,
+    default: false,
+  }
 });
 
 const Track = mongoose.model('Track', TrackSchema);

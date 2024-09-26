@@ -27,6 +27,11 @@ const AlbumSchema = new Schema({
       message: 'Artist does not exist!',
     }
   },
+  isPublished: {
+    type: Boolean,
+    required: true,
+    default: false,
+  }
 });
 
 const Album = mongoose.model('Album', AlbumSchema);

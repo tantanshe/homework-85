@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import Artist from '../models/Artist';
 import {imagesUpload} from '../multer';
 import {ArtistMutation} from '../types';
+import auth, {RequestWithUser} from '../middleware/auth';
+import permit from '../middleware/permit';
 
 
 const artistsRouter = express.Router();
@@ -28,7 +30,7 @@ artistsRouter.get('/:id', async (req, res, next) => {
   }
 });
 
-artistsRouter.post('/', imagesUpload.single('photo'), async (req, res, next) => {
+artistsRouter.post('/', auth, imagesUpload.single('photo'), async (req: RequestWithUser, res, next) => {
   try {
     const artistMutation: ArtistMutation = {
       name: req.body.name,
@@ -46,6 +48,33 @@ artistsRouter.post('/', imagesUpload.single('photo'), async (req, res, next) => 
     }
 
     return next(error);
+  }
+});
+
+artistsRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, res, next) => {
+  try {
+    await Artist.deleteOne({_id: req.params.id});
+
+    res.send({message: 'Artist deleted successfully'});
+  } catch (error) {
+    next(error);
+  }
+});
+
+artistsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req: RequestWithUser, res, next) => {
+  try {
+    const artist = await Artist.findById(req.params.id);
+
+    if (!artist) {
+      return res.status(404).json({error: 'Artist not found'});
+    }
+
+    artist.isPublished = !artist.isPublished;
+    await artist.save();
+
+    res.json(artist);
+  } catch (error) {
+    next(error);
   }
 });
 
