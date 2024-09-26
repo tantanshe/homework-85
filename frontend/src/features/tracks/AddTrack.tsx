@@ -20,6 +20,7 @@ const AddTrack: React.FC = () => {
     trackNumber: 0,
     name: '',
     duration: '',
+    isPublished: false,
   });
 
   useEffect(() => {

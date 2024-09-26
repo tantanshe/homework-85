@@ -39,6 +39,7 @@ artistsRouter.post('/', auth, imagesUpload.single('photo'), async (req: RequestW
       name: req.body.name,
       photo: req.file ? req.file.filename : null,
       info: req.body.info,
+      isPublished: false,
     };
 
     const artist = new Artist(artistMutation);

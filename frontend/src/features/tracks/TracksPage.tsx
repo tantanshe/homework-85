@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectTracks, selectIsTracksLoading, selectTracksError} from './tracksSlice';
-import {fetchTracks} from './tracksThunks';
+import {deleteTrack, fetchTracks, updateTrack} from './tracksThunks';
 import {
   List,
   ListItem,
@@ -11,13 +11,13 @@ import {
   Typography,
   Stack,
   Paper,
-  IconButton
+  IconButton, Button
 } from '@mui/material';
 import {useParams} from 'react-router-dom';
 import {AppDispatch} from '../../app/store';
 import {selectAlbum, selectAlbumError, selectIsAlbumLoading} from '../albums/albumsSlice';
 import {selectArtist, selectArtistError, selectIsArtistLoading} from '../artists/artistsSlice';
-import {fetchAlbumById} from '../albums/albumsThunks';
+import {deleteAlbum, fetchAlbumById, updateAlbum} from '../albums/albumsThunks';
 import {fetchArtistById} from '../artists/artistsThunks';
 import {addTrackToHistory} from '../trackHistory/trackHistoryThunks';
 import {selectUser} from '../users/usersSlice';
@@ -39,6 +39,8 @@ const TracksPage: React.FC = () => {
   const errorArtist = useAppSelector(selectArtistError);
   const user = useAppSelector(selectUser);
 
+  const isAdmin = user?.role === 'admin';
+
   useEffect(() => {
     if (artistId && albumId) {
       dispatch(fetchArtistById(artistId));
@@ -48,7 +50,16 @@ const TracksPage: React.FC = () => {
   }, [dispatch, artistId, albumId]);
 
   const handlePlay = (trackId: string) => {
-      dispatch(addTrackToHistory(trackId));
+    dispatch(addTrackToHistory(trackId));
+  };
+
+  const handleDelete = (trackId: string, albumId: string) => {
+    dispatch(deleteTrack(trackId));
+    dispatch(fetchTracks(albumId));
+  };
+
+  const handlePublish = (trackId: string) => {
+    dispatch(updateTrack(trackId));
   };
 
   if (loadingTracks || loadingAlbum || loadingArtist) return <CircularProgress/>;
@@ -87,6 +98,32 @@ const TracksPage: React.FC = () => {
                 primary={`${track.trackNumber}. ${track.name}`}
                 secondary={`Duration: ${track.duration}`}
               />
+              {!track.isPublished && (
+                <Typography variant="body2" color="error" sx={{m: 1}}>
+                  Unpublished
+                </Typography>
+              )}
+              {track._id && isAdmin && (
+                <>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleDelete(track._id)}
+                  >
+                    Delete
+                  </Button>
+                  {!track.isPublished && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handlePublish(track._id)}
+                      sx={{ml: 1}}
+                    >
+                      Publish
+                    </Button>
+                  )}
+                </>
+              )}
               {user && (
                 <IconButton
                   color="primary"
@@ -101,7 +138,7 @@ const TracksPage: React.FC = () => {
                     },
                   }}
                 >
-                  <PlayArrow />
+                  <PlayArrow/>
                 </IconButton>
               )}
             </Paper>

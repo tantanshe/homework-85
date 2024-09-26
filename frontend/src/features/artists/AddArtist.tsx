@@ -17,6 +17,7 @@ const AddArtist: React.FC = () => {
     name: '',
     info: '',
     photo: null,
+    isPublished: false,
   });
 
   const fileInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

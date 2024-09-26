@@ -25,10 +25,10 @@ export const deleteTrack = createAsyncThunk<void, string>(
   }
 );
 
-export const updateTrack = createAsyncThunk<Track, Track>(
+export const updateTrack = createAsyncThunk<Track, string>(
   'tracks/updateTrack',
-  async (trackData) => {
-    const response = await axiosApi.patch(`/tracks/${trackData._id}`, trackData);
+  async (trackId) => {
+    const response = await axiosApi.patch(`/tracks/${trackId}/togglePublished`);
     return response.data;
   }
 );

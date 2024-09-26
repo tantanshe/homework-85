@@ -33,10 +33,10 @@ export const deleteArtist = createAsyncThunk<void, string>(
   }
 );
 
-export const updateArtist = createAsyncThunk<Artist, Artist>(
+export const updateArtist = createAsyncThunk<Artist, string>(
   'artists/updateArtist',
-  async (artistData) => {
-    const response = await axiosApi.patch(`/artists/${artistData._id}`, artistData);
+  async (artistId) => {
+    const response = await axiosApi.patch(`/artists/${artistId}/togglePublished`);
     return response.data;
   }
 );

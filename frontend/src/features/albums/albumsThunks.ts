@@ -33,10 +33,10 @@ export const deleteAlbum = createAsyncThunk<void, string>(
   }
 );
 
-export const updateAlbum = createAsyncThunk<Album, Album>(
+export const updateAlbum = createAsyncThunk<Album, string>(
   'albums/updateAlbum',
-  async (albumData) => {
-    const response = await axiosApi.patch(`/albums/${albumData._id}`, albumData);
+  async (albumId) => {
+    const response = await axiosApi.patch(`/albums/${albumId}/togglePublished`);
     return response.data;
   }
 );

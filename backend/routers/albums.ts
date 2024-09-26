@@ -9,11 +9,19 @@ import permit from '../middleware/permit';
 
 const albumsRouter = express.Router();
 
-albumsRouter.get('/', async (req, res, next) => {
+albumsRouter.get('/', auth, async (req: RequestWithUser, res, next) => {
   try {
-    const artistId = req.query.artist;
-    const query = artistId ? {artist: artistId} : {};
-    const albums = await Album.find(query).sort({year: -1});
+    const albumQuery: {
+      isPublished?: boolean;
+      artist?: string
+    } = req.user?.role === 'admin' ? {} : {isPublished: true};
+    const artistId = req.query.artist as string;
+
+    if (artistId) {
+      albumQuery.artist = artistId;
+    }
+
+    const albums = await Album.find(albumQuery).sort({year: -1});
     res.json(albums);
   } catch (error) {
     next(error);
@@ -30,6 +38,7 @@ albumsRouter.post('/', auth, imagesUpload.single('photo'), async (req: RequestWi
       artist: req.body.artist,
       year: req.body.year,
       photo: req.file ? req.file.filename : null,
+      isPublished: false,
     };
 
     const isArtist = await Artist.findById(albumMutation.artist);

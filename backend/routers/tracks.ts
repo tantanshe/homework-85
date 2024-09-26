@@ -48,6 +48,7 @@ tracksRouter.post('/', auth, async (req: RequestWithUser, res, next) => {
       album: req.body.album,
       duration: req.body.duration,
       trackNumber: req.body.trackNumber,
+      isPublished: false,
     };
 
     const isAlbum = await Album.findById(trackMutation.album);

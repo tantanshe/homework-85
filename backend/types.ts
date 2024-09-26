@@ -2,6 +2,7 @@ export interface ArtistMutation {
   name: string;
   photo: string | null;
   info: string | null;
+  isPublished: boolean;
 }
 
 export interface AlbumMutation {
@@ -9,6 +10,7 @@ export interface AlbumMutation {
   artist: string;
   year: number;
   photo: string | null;
+  isPublished: boolean;
 }
 
 export interface TrackMutation {
@@ -16,6 +18,7 @@ export interface TrackMutation {
   album: string;
   duration: string;
   trackNumber: number,
+  isPublished: boolean;
 }
 
 export interface UserFields {

@@ -21,6 +21,7 @@ const AddAlbum: React.FC = () => {
     name: '',
     photo: null,
     year: 0,
+    isPublished: false,
   });
 
   useEffect(() => {
