@@ -7,7 +7,7 @@ import {addTrack} from './tracksThunks';
 import {Track} from '../../types';
 import {selectUser} from '../users/usersSlice';
 import {selectAlbums} from '../albums/albumsSlice';
-import {fetchAlbums} from '../albums/albumsThunks';
+import {fetchAllAlbums} from '../albums/albumsThunks';
 
 const AddTrack: React.FC = () => {
   const dispatch: AppDispatch = useAppDispatch();
@@ -24,7 +24,7 @@ const AddTrack: React.FC = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchAlbums());
+    dispatch(fetchAllAlbums());
   }, [dispatch]);
 
 
@@ -32,7 +32,13 @@ const AddTrack: React.FC = () => {
     e.preventDefault();
     if (!state.name || !state.albumId) return;
 
-    dispatch(addTrack(state))
+    const trackData = {
+      ...state,
+      album: state.albumId,
+    };
+
+
+    dispatch(addTrack(trackData))
       .then(() => {
         navigate('/');
       })

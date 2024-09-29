@@ -1,5 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {addAlbum, deleteAlbum, fetchAlbumById, fetchAlbums, updateAlbum} from './albumsThunks';
+import {
+  addAlbum,
+  deleteAlbum,
+  fetchAlbumById,
+  fetchAlbumsByArtistId,
+  fetchAllAlbums,
+  updateAlbum
+} from './albumsThunks';
 import {Album} from '../../types';
 import {RootState} from '../../app/store';
 
@@ -23,15 +30,28 @@ const albumsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAlbums.pending, (state) => {
+      .addCase(fetchAllAlbums.pending, (state) => {
         state.loading = true;
         state.error = false;
       })
-      .addCase(fetchAlbums.fulfilled, (state, action) => {
+      .addCase(fetchAllAlbums.fulfilled, (state, action) => {
+        state.loading = false;
+        state.albums = action.payload;
+      })
+      .addCase(fetchAllAlbums.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+
+      .addCase(fetchAlbumsByArtistId.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(fetchAlbumsByArtistId.fulfilled, (state, action) => {
         state.albums = action.payload;
         state.loading = false;
       })
-      .addCase(fetchAlbums.rejected, (state) => {
+      .addCase(fetchAlbumsByArtistId.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });

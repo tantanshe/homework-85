@@ -40,6 +40,7 @@ const AddAlbum: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Track State:', state);
     if (!state.name || !state.artistId) return;
 
     const formData = new FormData();

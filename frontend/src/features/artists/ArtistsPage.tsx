@@ -33,9 +33,9 @@ const ArtistsPage: React.FC = () => {
   if (loading) return <CircularProgress/>;
   if (error) return <Alert severity="error">Error loading artists</Alert>;
 
-  const handleDelete = (artistId: string) => {
-    dispatch(deleteArtist(artistId));
-    dispatch(fetchArtists());
+  const handleDelete = async (artistId: string) => {
+    await dispatch(deleteArtist(artistId));
+    await dispatch(fetchArtists());
   };
 
   const handlePublish = (artistId: string) => {
@@ -89,7 +89,8 @@ const ArtistsPage: React.FC = () => {
                         Delete
                       </Button>
                       {!artist.isPublished && (
-                        <Button variant="contained" color="primary" onClick={() => handlePublish(artist._id)}>
+                        <Button variant="contained" color="primary" onClick={() => handlePublish(artist._id)}
+                                sx={{ml: 1}}>
                           Publish
                         </Button>
                       )}

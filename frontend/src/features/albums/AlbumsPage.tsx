@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectAlbums, selectIsAlbumsLoading, selectAlbumsError} from './albumsSlice';
-import {deleteAlbum, fetchAlbums, updateAlbum} from './albumsThunks';
+import {deleteAlbum, fetchAlbumsByArtistId, updateAlbum} from './albumsThunks';
 import {Card, CardContent, CardMedia, Typography, CircularProgress, Alert, Grid, Button, Box} from '@mui/material';
 import {Link, useParams} from 'react-router-dom';
 import {AppDispatch} from '../../app/store';
@@ -26,7 +26,7 @@ const AlbumsPage: React.FC = () => {
 
   useEffect(() => {
     if (artistId) {
-      dispatch(fetchAlbums(artistId));
+      dispatch(fetchAlbumsByArtistId(artistId));
       dispatch(fetchArtistById(artistId));
     }
   }, [dispatch, artistId]);
@@ -35,9 +35,9 @@ const AlbumsPage: React.FC = () => {
   if (error) return <Alert severity="error">Error loading albums</Alert>;
   if (errorArtist) return <Alert severity="error">Error loading artist</Alert>;
 
-  const handleDelete = (albumId: string, artistId: string) => {
-    dispatch(deleteAlbum(albumId));
-    dispatch(fetchAlbums(artistId));
+  const handleDelete = async (albumId: string, artistId: string) => {
+    await dispatch(deleteAlbum(albumId));
+    await dispatch(fetchAlbumsByArtistId(artistId));
   };
 
   const handlePublish = (albumId: string) => {
@@ -56,7 +56,7 @@ const AlbumsPage: React.FC = () => {
         )}
         <Grid item container spacing={2} justifyContent="center">
           {albums.length === 0 ? (
-            <Typography variant="h6" color="textSecondary">
+            <Typography variant="h6" color="textSecondary" align="center">
               No albums yet
             </Typography>
           ) : (
@@ -102,7 +102,7 @@ const AlbumsPage: React.FC = () => {
                   <CardContent>
                     {album._id && isAdmin && (
                       <>
-                        <Button variant="contained" color="secondary" onClick={() => handleDelete(album._id)}>
+                        <Button variant="contained" color="secondary" onClick={() => handleDelete(album._id, artistId)}>
                           Delete
                         </Button>
                         {!album.isPublished && (

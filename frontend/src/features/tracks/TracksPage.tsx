@@ -17,7 +17,7 @@ import {useParams} from 'react-router-dom';
 import {AppDispatch} from '../../app/store';
 import {selectAlbum, selectAlbumError, selectIsAlbumLoading} from '../albums/albumsSlice';
 import {selectArtist, selectArtistError, selectIsArtistLoading} from '../artists/artistsSlice';
-import {deleteAlbum, fetchAlbumById, updateAlbum} from '../albums/albumsThunks';
+import {fetchAlbumById} from '../albums/albumsThunks';
 import {fetchArtistById} from '../artists/artistsThunks';
 import {addTrackToHistory} from '../trackHistory/trackHistoryThunks';
 import {selectUser} from '../users/usersSlice';
@@ -53,9 +53,9 @@ const TracksPage: React.FC = () => {
     dispatch(addTrackToHistory(trackId));
   };
 
-  const handleDelete = (trackId: string, albumId: string) => {
-    dispatch(deleteTrack(trackId));
-    dispatch(fetchTracks(albumId));
+  const handleDelete = async (trackId: string, albumId: string) => {
+    await dispatch(deleteTrack(trackId));
+    await dispatch(fetchTracks(albumId));
   };
 
   const handlePublish = (trackId: string) => {
@@ -66,6 +66,8 @@ const TracksPage: React.FC = () => {
   if (errorTracks) return <Alert severity="error">Error loading tracks</Alert>;
   if (errorAlbum) return <Alert severity="error">Error loading albums</Alert>;
   if (errorArtist) return <Alert severity="error">Error loading artists</Alert>;
+
+  const filteredTracks = tracks.filter((track) => isAdmin || track.isPublished);
 
   return (
     <Stack spacing={2}>
@@ -79,72 +81,79 @@ const TracksPage: React.FC = () => {
           {album.name}
         </Typography>
       )}
-      <List>
-        {tracks.map((track) => (
-          <ListItem key={track._id}>
-            <Paper
-              elevation={3}
-              style={{
-                width: '100%',
-                padding: '8px 16px',
-                marginBottom: '8px',
-                backgroundColor: '#d8e2e4',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}
-            >
-              <ListItemText
-                primary={`${track.trackNumber}. ${track.name}`}
-                secondary={`Duration: ${track.duration}`}
-              />
-              {!track.isPublished && (
-                <Typography variant="body2" color="error" sx={{m: 1}}>
-                  Unpublished
-                </Typography>
-              )}
-              {track._id && isAdmin && (
-                <>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleDelete(track._id)}
-                  >
-                    Delete
-                  </Button>
-                  {!track.isPublished && (
+      {filteredTracks.length === 0 ? (
+        <Typography variant="h6" color="textSecondary" align="center">
+          No tracks yet
+        </Typography>
+      ) : (
+        <List>
+          {filteredTracks.map((track) => (
+            <ListItem key={track._id}>
+              <Paper
+                elevation={3}
+                style={{
+                  width: '100%',
+                  padding: '8px 16px',
+                  marginBottom: '8px',
+                  backgroundColor: '#d8e2e4',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <ListItemText
+                  primary={`${track.trackNumber}. ${track.name}`}
+                  secondary={`Duration: ${track.duration}`}
+                />
+                {!track.isPublished && (
+                  <Typography variant="body2" color="error" sx={{m: 1}}>
+                    Unpublished
+                  </Typography>
+                )}
+                {track._id && isAdmin && (
+                  <>
                     <Button
                       variant="contained"
-                      color="primary"
-                      onClick={() => handlePublish(track._id)}
-                      sx={{ml: 1}}
+                      color="secondary"
+                      onClick={() => handleDelete(track._id, albumId)}
+                      sx={{ml: 1, mr: 1}}
                     >
-                      Publish
+                      Delete
                     </Button>
-                  )}
-                </>
-              )}
-              {user && (
-                <IconButton
-                  color="primary"
-                  onClick={() => handlePlay(track._id)}
-                  sx={{
-                    backgroundColor: '#ffffff',
-                    border: '2px solid #3f51b5',
-                    borderRadius: '50%',
-                    padding: '8px',
-                    '&:hover': {
-                      backgroundColor: '#a7b2df',
-                    },
-                  }}
-                >
-                  <PlayArrow/>
-                </IconButton>
-              )}
-            </Paper>
-          </ListItem>
-        ))}
-      </List>
+                    {!track.isPublished && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handlePublish(track._id)}
+                        sx={{ml: 1, mr: 1}}
+                      >
+                        Publish
+                      </Button>
+                    )}
+                  </>
+                )}
+                {user && (
+                  <IconButton
+                    color="primary"
+                    onClick={() => handlePlay(track._id)}
+                    sx={{
+                      backgroundColor: '#ffffff',
+                      border: '2px solid #3f51b5',
+                      borderRadius: '50%',
+                      padding: '8px',
+                      '&:hover': {
+                        backgroundColor: '#a7b2df',
+                      },
+                    }}
+                  >
+                    <PlayArrow/>
+                  </IconButton>
+                )}
+              </Paper>
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Stack>
   );
 };
