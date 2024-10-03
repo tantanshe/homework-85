@@ -5,8 +5,8 @@ import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {LoginMutation} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectLoginError, selectLoginLoading} from './usersSlice';
-import {login} from './usersThunks';
-import {GoogleLogin} from '@react-oauth/google';
+import {googleLogin, login} from './usersThunks';
+import {CredentialResponse, GoogleLogin} from '@react-oauth/google';
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +37,14 @@ const Login = () => {
     }
   };
 
+  const googleLoginHandler = async (credentialResponse: CredentialResponse) => {
+    if (credentialResponse.credential) {
+      await dispatch(googleLogin(credentialResponse.credential)).unwrap();
+      navigate('/');
+    }
+
+  };
+
   if (loading) return <CircularProgress/>;
 
   return (
@@ -62,9 +70,7 @@ const Login = () => {
       )}
       <Box sx={{ pt: 2 }}>
         <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-          }}
+          onSuccess={googleLoginHandler}
           onError={() => {
             console.log('Login Failed');
           }}

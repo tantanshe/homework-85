@@ -15,6 +15,7 @@ usersRouter.post('/', async (req, res, next) => {
       username: req.body.username,
       password: req.body.password,
       token: randomUUID(),
+      displayName: req.body.displayName || 'Anonymous',
     });
 
     await user.save();
@@ -84,7 +85,7 @@ usersRouter.post('/google', async (req, res, next) => {
 
     user.token = randomUUID();
     await user.save();
-    return res.send({message: 'Login with Google successful!', user});
+    return res.send(user);
   } catch (e) {
     return next(e);
   }

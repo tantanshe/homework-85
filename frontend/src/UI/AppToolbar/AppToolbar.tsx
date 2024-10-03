@@ -1,4 +1,4 @@
-import {AppBar, Button, Grid, styled, Toolbar, Typography} from '@mui/material';
+import {AppBar, Avatar, Button, Grid, styled, Toolbar, Typography} from '@mui/material';
 import {Link, NavLink} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectUser} from '../../features/users/usersSlice';
@@ -11,6 +11,17 @@ const StyledLink = styled(Link)({
     color: 'inherit',
   }
 });
+
+const buttonStyles = {
+  backgroundColor: '#ffffff',
+  border: '2px solid #3f51b5',
+  borderRadius: '10px',
+  padding: '8px',
+  margin: '5px 0',
+  '&:hover': {
+    backgroundColor: '#a7b2df',
+  },
+};
 
 const AppToolbar = () => {
   const dispatch = useAppDispatch();
@@ -31,69 +42,39 @@ const AppToolbar = () => {
           </Grid>
           {user ? (
             <Grid item>
-              <Typography>
-                User is logged in
-              </Typography>
-              <Button component={NavLink} to="/track_history" sx={{
-                backgroundColor: '#ffffff',
-                border: '2px solid #3f51b5',
-                borderRadius: '10px',
-                padding: '8px',
-                margin: '5px 0',
-                '&:hover': {
-                  backgroundColor: '#a7b2df',
-                },
-              }}>
-                Track History
-              </Button>
-              <Button component={NavLink} to="/addArtist" sx={{
-                backgroundColor: '#ffffff',
-                border: '2px solid #3f51b5',
-                borderRadius: '10px',
-                padding: '8px',
-                margin: '5px 0',
-                '&:hover': {
-                  backgroundColor: '#a7b2df',
-                },
-              }}>
-                Add Artist
-              </Button>
-              <Button component={NavLink} to="/addAlbum" sx={{
-                backgroundColor: '#ffffff',
-                border: '2px solid #3f51b5',
-                borderRadius: '10px',
-                padding: '8px',
-                margin: '5px 0',
-                '&:hover': {
-                  backgroundColor: '#a7b2df',
-                },
-              }}>
-                Add Album
-              </Button>
-              <Button component={NavLink} to="/addTrack" sx={{
-                backgroundColor: '#ffffff',
-                border: '2px solid #3f51b5',
-                borderRadius: '10px',
-                padding: '8px',
-                margin: '5px 0',
-                '&:hover': {
-                  backgroundColor: '#a7b2df',
-                },
-              }}>
-                Add Track
-              </Button>
-              <Button onClick={handleLogout} sx={{
-                backgroundColor: '#ffffff',
-                border: '2px solid #3f51b5',
-                borderRadius: '10px',
-                padding: '8px',
-                margin: '5px 0',
-                '&:hover': {
-                  backgroundColor: '#a7b2df',
-                },
-              }}>
-                Logout
-              </Button>
+              <Grid container alignItems="center" justifyContent="flex-end" sx={{mb: 1}}>
+                <Typography variant="h6" sx={{mr: 1}}>
+                  Hello {user.displayName}!
+                </Typography>
+                {user.avatar && <Avatar src={user.avatar} alt={user.displayName}/>}
+              </Grid>
+              <Grid container spacing={1} justifyContent="flex-end">
+                <Grid item>
+                  <Button component={NavLink} to="/track_history" sx={buttonStyles}>
+                    Track History
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button component={NavLink} to="/addArtist" sx={buttonStyles}>
+                    Add Artist
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button component={NavLink} to="/addAlbum" sx={buttonStyles}>
+                    Add Album
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button component={NavLink} to="/addTrack" sx={buttonStyles}>
+                    Add Track
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button onClick={handleLogout} sx={buttonStyles}>
+                    Logout
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
           ) : (
             <Grid item>

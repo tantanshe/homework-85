@@ -114,11 +114,13 @@ const run = async () => {
     username: 'user',
     password: '1@345qWert',
     token: crypto.randomUUID(),
+    displayName: 'User',
     role: 'user'
   }, {
     username: 'admin',
     password: '1@345qWert',
     token: crypto.randomUUID(),
+    displayName: 'Admin',
     role: 'admin'
   });
 
