@@ -6,6 +6,7 @@ import {LoginMutation} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectLoginError, selectLoginLoading} from './usersSlice';
 import {login} from './usersThunks';
+import {GoogleLogin} from '@react-oauth/google';
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -59,6 +60,16 @@ const Login = () => {
           {error.error}
         </Alert>
       )}
+      <Box sx={{ pt: 2 }}>
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
+      </Box>
       <Box component="form" onSubmit={submitFormHandler} sx={{mt: 3}}>
         <Grid container direction="column" spacing={2}>
           <Grid item>

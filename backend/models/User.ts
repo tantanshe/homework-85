@@ -35,7 +35,13 @@ const UserSchema = new Schema<UserFields>({
     required: true,
     default: 'user',
     enum: ['user', 'admin']
-  }
+  },
+  displayName: {
+    type: String,
+    required: true,
+  },
+  googleID: String,
+  avatar: String,
 });
 
 UserSchema.pre('save', async function (next) {
